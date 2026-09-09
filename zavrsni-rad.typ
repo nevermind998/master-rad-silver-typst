@@ -68,6 +68,7 @@
 
 // TODO: Овде укључујете поглавља
 #include "poglavlja/1-uvod.typ"
+#set heading(numbering: "1.1")
 #include "poglavlja/2-stanje.typ"
 #include "poglavlja/3-stanje.typ"
 #include "poglavlja/4-stanje.typ"

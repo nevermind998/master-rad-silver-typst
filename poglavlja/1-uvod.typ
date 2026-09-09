@@ -1,4 +1,5 @@
 #import "../funkcije.typ": todo
+#set heading(numbering: none)
 = Увод
 <увод>
 
