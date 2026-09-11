@@ -62,7 +62,7 @@ Azure платформа је једно од најраспрострањени
 #figure(image("../slike/slika-6.10.2-2.png", width: 90%), caption: [Синтаксни приказ метамодела]) <slika-6-10-2-2>
 
 
-На слици  6.10.2:3 је приказано како се то види у коду
+На слици @slika-6-10-2-3 је приказано како се то види у коду
 
  
 #figure(image("../slike/slika-6.10.2-3.png", width: 90%), caption: [Приказ метамодела за деполјмент у коду]) <slika-6-10-2-3>
@@ -114,12 +114,12 @@ kubectl port-forward svc/rabbitmq 15672:15672 -n order-tracking
 
 Get-NetTCPConnection -LocalPort 8081,8082,8083,8084 -ErrorAction SilentlyContinue | Select-Object LocalPort, OwningProcess
 
-На слици 6.10.4:1 колона OwningProcess заправо представља бројеве који су идентификатори процеса
+На слици @slika-6-10-4-1 колона OwningProcess заправо представља бројеве који су идентификатори процеса
 
  
 #figure(image("../slike/slika-6.10.4-1.png", width: 90%), caption: [Приказ идентификатора процеса]) <slika-6-10-4-1>
 
-На слици 6.10.4:12 имамо приказ тих процеса
+На слици @slika-6-10-4-2 имамо приказ тих процеса
 
  
 #figure(image("../slike/slika-6.10.4-2.png", width: 90%), caption: [Приказ покренутих процеса у терминалу]) <slika-6-10-4-2>
@@ -132,10 +132,9 @@ python tests\generated\test_messaging.py
 python tests\smoke_test.py
 
 
-Резултати покретања test_auth_enforcement.py тестова:
+Резултати покретања `test_auth_enforcement.py` тестова:
 
 ```text
-
 Section 1 — Public endpoints  (no token required)
 ─────────────────────────────────────
   [PASS] OrderService           GET    /health   (orders-db, rabbitmq)
@@ -206,7 +205,11 @@ Section 1 — Public endpoints  (no token required)
 ---
                    Results:  48 passed  0 failed  0 skipped  (48 total)
 ---
-Резултати покретања test_jwt_hardening.py:
+```
+
+Резултати покретања `test_jwt_hardening.py`:
+
+```text
 
   JWT Hardening — generated from silvera/services.si
   8 bad-token case(s) against 4 service(s)
@@ -267,7 +270,11 @@ Section 1 — Public endpoints  (no token required)
 ---
   Results:  36 passed  0 failed  0 skipped  (36 total)
 ---
-Резултати покретања test_messaging.py тестова:
+```
+
+Резултати покретања `test_messaging.py` тестова:
+
+```text
 
    Messaging topology — generated from silvera/communication.si
   5 consumed event(s), 8 receive endpoint(s), 1 orphan(s)
@@ -1119,12 +1126,12 @@ kubectl port-forward svc/rabbitmq 15672:15672 -n order-tracking
 
 Get-NetTCPConnection -LocalPort 8081,8082,8083,8084 -ErrorAction SilentlyContinue | Select-Object LocalPort, OwningProcess
 
-На слици 6.10.4:1 колона OwningProcess заправо представља бројеве који су идентификатори процеса
+На слици @slika-6-10-4-1 колона OwningProcess заправо представља бројеве који су идентификатори процеса
 
  
 #figure(image("../slike/slika-6.10.4-1.png", width: 90%), caption: [Приказ идентификатора процеса])
 
-На слици 6.10.4:12 имамо приказ тих процеса
+На слици @slika-6-10-4-2 имамо приказ тих процеса
 
  
 #figure(image("../slike/slika-6.10.4-2.png", width: 90%), caption: [Приказ покренутих процеса у терминалу])
@@ -1137,7 +1144,9 @@ python tests\generated\test_messaging.py
 python tests\smoke_test.py
 
 
-Резултати покретања test_auth_enforcement.py тестова:
+Резултати покретања `test_auth_enforcement.py` тестова:
+
+```text
 
 Section 1 — Public endpoints  (no token required)
 ─────────────────────────────────────
@@ -1209,7 +1218,11 @@ Section 1 — Public endpoints  (no token required)
 ---
                    Results:  48 passed  0 failed  0 skipped  (48 total)
 ---
-Резултати покретања test_jwt_hardening.py:
+```
+
+Резултати покретања `test_jwt_hardening.py`:
+
+```text
 
   JWT Hardening — generated from silvera/services.si
   8 bad-token case(s) against 4 service(s)
@@ -1270,7 +1283,11 @@ Section 1 — Public endpoints  (no token required)
 ---
   Results:  36 passed  0 failed  0 skipped  (36 total)
 ---
-Резултати покретања test_messaging.py тестова:
+```
+
+Резултати покретања `test_messaging.py` тестова:
+
+```text
 
    Messaging topology — generated from silvera/communication.si
   5 consumed event(s), 8 receive endpoint(s), 1 orphan(s)
@@ -1517,6 +1534,8 @@ Section 1 — Public endpoints  (no token required)
   Results:  110 passed  0 failed  0 skipped  (110 total)
   All checks passed.
 ---
+```
+
 Тестови који су креирани за проверу рада ове апликације су важан део процеса. Омогућавају проверу исправности комуникације између различитих сервиса и понашања система у реалном окружењу. Извршавају се локално, док истовремено комуницирају са сервисима који су пребачени на Azure Kubernetes Service (AKS). Тестови служе као превенција, односно да се раније открију проблеми у комуникацији, конфигурацији и интеграцији сервиса открију пре пуштања апликације у продукционо окружење. 
 
  
