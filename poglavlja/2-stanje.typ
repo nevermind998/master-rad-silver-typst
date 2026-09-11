@@ -256,95 +256,74 @@ o	Понављање нула или више пута (Zero or more (*)) – с
   caption: [Израз нула или више понављања],
 ) <listing-4-1-6>
 
-o	Понављање једном или више пута  (One or more (+)) – се наводи употребом оператора + иза подизраза. Подизраз ће у том случају бити препознат једном или више понављања, то можемо да видимо на листунгу 4.1.7.
-```text
-Colors:
-("red" | "green" | "blue")+
-;
-```
-Листинг 4.1.7 – Израз једном или више понављања
+o	Понављање једном или више пута  (One or more (+)) – се наводи употребом оператора + иза подизраза. Подизраз ће у том случају бити препознат једном или више понављања, то можемо да видимо на листунгу @listing-4-1-7.
+#figure(
+  raw("Colors:(\"red\" | \"green\" | \"blue\")+;\n;", lang: "text"),
+  caption: [Израз једном или више понављања],
+) <listing-4-1-7>
 
 
 -	Референца (References) – правила могу међусобно да се референцирају. Могу бити:
 o	Референцирање преко препознавања (Match reference) – дефинише се навођењем имена неког другог правила, готов увек се ради на десној стрни доделе. Објекат који референцира садржи објекат који се референцира
 
 
-```text
-                              structure:
-                                'structure' '{'
-                     elements*= StructureElement
-                              '}'
-                               ;
-```
-Листинг 4.1.8 – Израз референци преко препознавања
+#figure(
+  raw("                              structure:\n                                'structure' '{'\n                     elements*= StructureElement\n                              '}'\n                               ;", lang: "text"),
+  caption: [Израз референци преко препознавања],
+) <listing-4-1-8>
 
 o	Референцирање преко  везе (Link reference ([..])) – употребом овог израза парсер ће покушати да препозна име циљаног објекта, а не објекат у целости, где је циљани објекат дефинисан негде унутар модела.
 
-```text
-ScreenType:
-'screen' name= ID '{'
-'}'
-                                                                               ;
-
-ScreenInstance:
-'screen' type = [ScreenType]
-                                                                               ;
-```
-Листинг 4.1.9 – Израз референци преко препознавања
+#figure(
+  raw("ScreenType:\n'screen' name= ID '{'\n'}'\n                                                                               ;\n\nScreenInstance:\n'screen' type = [ScreenType]\n                                                                               ;", lang: "text"),
+  caption: [Израз референци преко везе],
+) <listing-4-1-9>
 
 
 - Додела (Assignments) – доделе се користе као део поступка за дедукције мета-модела. 
 
-Свака додела ће резултирати атрибутом мета-класе креиране од стране правила. Свако правило има своју леву стране (енгл. left-hand side - LHS), на којој се налази име атрибута мета-класе, и десну страну (енгл. right-hand side – RHS), на којој може бити референца ка неком другом правилу или израз match (листинг 4.1.10). 
+Свака додела ће резултирати атрибутом мета-класе креиране од стране правила. Свако правило има своју леву стране (енгл. left-hand side - LHS), на којој се налази име атрибута мета-класе, и десну страну (енгл. right-hand side – RHS), на којој може бити референца ка неком другом правилу или израз match (листинг @listing-4-1-10). 
 Подврсте су:
-o	Обична додела  (Plain (=)) 
-o	Булова додела (Boolean (?=))
-o	Додела нула или више (Zero or more (`*=`)) 
-o	Додела један или више (One or more (+=)) 
+
+-	Обична додела  (Plain (=)) 
+- Булова додела (Boolean (?=))
+- Додела нула или више (Zero or more (`*=`)) 
+-	Додела један или више (One or more (+=)) 
 
 
-```text
-Person:
-name=Name ',' surname=Surname ',' age=INT ',' height=INT ';'
-                                   ;
-```
-Листинг 4.1.10 – Израз доделе 28
+#figure(
+  raw("Person:\nname=Name ',' surname=Surname ',' age=INT ',' height=INT ';'\n                                   ;", lang: "text"),
+  caption: [Израз доделе],
+) <listing-4-1-10>
 
 •	Синтаксни предикати  (Syntactic predicates) – оператори који се користе за имплементацију погледа унапред, која представља технику да се донесе одлука о примени парсирања на основу дела улазног стринга који следи, без његове претходне обраде.
-o	Not (!) - negative lookahead 
-o	And (&) - positive lookahead 
+-	Not (!) - negative lookahead 
+-	And (&) - positive lookahead 
 
 
 -	Уклањање препознатог улаза (Match suppression) – користе се уколико је потребно да дефинишемо правило које враћа само део поклапања израза. У овом случају, користи се оператор за уклањање препознатог улаза (-) који се наводи после израза препознавања. 
 
 
-```text
-FullyQualifiedID[noskipws]:
-/\s*/-
-QuotedID+['.']
-/\s*/-
-;
-QuotedID:
-'"'?- ID '"'?-
-;
-```
-Листинг 4.1.11 - Израз match suppression
+#figure(
+  raw("FullyQualifiedID[noskipws]:\n/\\s*/-\nQuotedID+['.']\n/\\s*/-\n;\nQuotedID:\n'\"'?- ID '\"'?-\n;", lang: "text"),
+  caption: [Израз match suppression],
+) <listing-4-1-11>
 
 
 -	Модификатор понављања ( Repetition modifiers) – користи се за модификацију понашања свих оператора понављања. У текућој имплементацији наведена су две поделе:
-o	Модификатор сепарације (Separator modifier)  – користи се за дефиницију сепаратора за вишеструко препознавање. Сам сепаратор је саграђен  string match или regex match (листинг 4.1.12). 
+o	Модификатор сепарације (Separator modifier)  – користи се за дефиницију сепаратора за вишеструко препознавање. Сам сепаратор је саграђен  string match или regex match (листинг @listing-4-1-12). 
 
-```text
-numbers*=INT[',']
-```
-Листинг 4.1.12 - Модификатор сепарације
+#figure(
+  raw("numbers*=INT[',']", lang: "text"),
+  caption: [Модификатор сепарације],
+) <listing-4-1-12>
 
 o	Модификатор краја линије (End-of-line terminate modifier (eolterm) ) – када је укључен овај модификатор, оператори понављања ће завршити понављање на крају текућег реда. Наводе се и они између угластих заграда, и то на почетку самог правила, након његовог имена. 
 
-```text
-STRING*[`,`, eolterm]
-```
-Листинг 4.1.13 - Модификатор краја линије
+#figure(
+  raw("STRING*[`,`, eolterm]", lang: "text"),
+  caption: [Модификатор краја линије],
+) <listing-4-1-13>
 
 
 == Конфигурација парсера
@@ -382,36 +361,17 @@ TextX креира Arpeggio парсере, који се могу конфиг�
 
 -	Процесори објеката (енгл. object processors) –позивају се након сваког успешног препознавања појединачног објекта. Једини параметар који се прослеђује у овом случају је објекат који је потребно да се провери или модификује. 
 
-```python
-def entity_obj_processor(entity):
-'''
-Check that Ethe ntity names are capitalized. This could also be specified
-in the grammar using regex match but we will do that check here just
-as an example.
-'''
-if entity.name != entity.name.capitalize():
-raise TextXSemanticError('Entity name "%s" must be capitalized.' %
-entity.name, **get_location(entity))
-obj_processors = {
-'Entity': entity_obj_processor
-}
-entity_mm.register_obj_processors(obj_processors)
-entity_mm.model_from_file('my_entity_model.ent')
-```
-Листинг 4.3.1 – Процесор објекта
+#figure(
+  raw("def entity_obj_processor(entity):\n'''\nCheck that Ethe ntity names are capitalized. This could also be specified\nin the grammar using regex match but we will do that check here just\nas an example.\n'''\nif entity.name != entity.name.capitalize():\nraise TextXSemanticError('Entity name \"%s\" must be capitalized.' %\nentity.name, **get_location(entity))\nobj_processors = {\n'Entity': entity_obj_processor\n}\nentity_mm.register_obj_processors(obj_processors)\nentity_mm.model_from_file('my_entity_model.ent')", lang: "python"),
+  caption: [Процесор објекта],
+) <listing-4-3-1>
 
 -	Процесори модела (енгл. Model processors) – позивају се након што се цео модел успешно парсира. Параметри су мета-модел и модел. Могу да обаве произвољну проверу и/или модификацију модела. Региструју се позивом методе register_model_processor над мета-модел објектом. 
 
-from textx import metamodel_from_file
-def check_some_semantics(model, metamodel):
-...
-... Do some check on the model and raise TextXSemanticError if the semantics
-... rules are violated.
-my_metamodel = metamodel_from_file('mygrammar.tx')
-my_metamodel.register_model_processor(check_some_semantics)
-my_metamodel.model_from_file('some_model.ext')
-
-Листинг 4.3.2 – Процесор модела 31
+#figure(
+  raw("from textx import metamodel_from_file\ndef check_some_semantics(model, metamodel):\n...\n... Do some check on the model and raise TextXSemanticError if the semantics\n... rules are violated.\nmy_metamodel = metamodel_from_file('mygrammar.tx')\nmy_metamodel.register_model_processor(check_some_semantics)\nmy_metamodel.model_from_file('some_model.ext')", lang: "python"),
+  caption: [Процесор модела],
+) <listing-4-3-2>
 
 
 Могуће је да се дефинишу и изузеци, и тада се дефинише TextXSemanticError. Кодом који се инстанцира или парсира модел може се ухватити и управљати (енгл. handle) изузецима, и они се потребни када неки услов процесора није задовољено.
