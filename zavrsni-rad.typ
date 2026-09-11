@@ -5,9 +5,7 @@
 #set page(paper: format_strane, margin: (y: 2.5cm, inside: 2cm, outside: 1.5cm))
 #include "naslovna.typ"
 #pagebreak()
-#pagebreak()
 #include "zadatak.typ"
-#pagebreak()
 #pagebreak()
 #include "kljucna.typ"
 #pagebreak()

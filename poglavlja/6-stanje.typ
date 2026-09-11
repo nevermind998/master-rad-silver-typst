@@ -593,7 +593,7 @@ python test_jwt_hardening.py `
 
 Резултати када се покрену тестови из test_auth_enforcement.py
 
-
+```text
   Auth Enforcement — generated from silvera/services.si
   18 protected / 8 public endpoints across 4 services
 ---
@@ -674,8 +674,10 @@ python test_jwt_hardening.py `
 ---
   Results:  48 passed  0 failed  0 skipped  (48 total)
 ---
+```
 Резултати када се покрену тестови из test_messaging.py
                                          
+```text
   Messaging topology — generated from silvera/communication.si                                                
   5 consumed event(s), 8 receive endpoint(s), 1 orphan(s)
   Broker: http://3.84.174.154:15672
@@ -741,8 +743,10 @@ python test_jwt_hardening.py `
 ---
   Results:  27 passed  0 failed  1 skipped  (28 total)
 ---
+```
 Резултати када се покрену тестови из jwt_hardening.py
 
+```text
   JWT Hardening — generated from silvera/services.si
   8 bad-token case(s) against 4 service(s)
 ---
@@ -802,8 +806,10 @@ python test_jwt_hardening.py `
 ---
   Results:  36 passed  0 failed  0 skipped  (36 total)
 ---
+```
 Резултати када се покрену smoke тестови
  
+```text
 Order Tracking System — Integration Test Suite
   Mode: aws   Section: all
 ---
@@ -982,6 +988,7 @@ Order Tracking System — Integration Test Suite
   Results:  110 passed  0 failed  0 skipped  (110 total)
   All checks passed.
 ---
+```
 Тестови који се овде извршавају локално комуницирају са сервисима који су доступни на AWS EC2 инстанцама. Циљ је да покрију што већу функционалност и међусобну комуникацију сервиса у окружењу које је блиско реалном продукционом окружењу. Овим приступом се на једноставнији начин врши провера интеграције микросервисне апликације и представља једну од могућности за њено извршавање и тестирање у AWS облаку.
  
 /*
