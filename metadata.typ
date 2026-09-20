@@ -1,10 +1,11 @@
 #let format_strane = "iso-b5"         // могуће вредности: iso-b5, a4
-#let naslov = "Генератор из Silvera ЈСД за AWS и Azure"
+#let naslov = [ Генератор кода за _AWS_ и _Azure_ из _Silvera_ језика специфичног за домен описа
+    система базираних на микросервисима ]
 #let autor = "Јована Арсовић"
 
 // На енглеском
-#let naslov_eng = "Template and tutorial for thesis preparation"
-#let autor_eng = "Upisati ime i prezime na latinici"
+#let naslov_eng = "A source code generator for AWS and Azure based on the Silvera domain-specific language for microservice-based systems"
+#let autor_eng = "Jovana Arsović"
 
 #let indeks = "R234/22"
 
@@ -48,15 +49,15 @@
 ]
 
 // TODO: Датум одбране и чланове комисије добијате од ментора
-#let datum_odbrane = "01.01.2025"
-#let komisija_predsednik = "Петар Петровић"
-#let komisija_predsednik_zvanje = "ванредни професор"
-#let komisija_clan = "Марко Марковић"
-#let komisija_clan_zvanje = "доцент"
+#let datum_odbrane = "25.09.2026"
+#let komisija_predsednik = "Гордана Милосављевић"
+#let komisija_predsednik_zvanje = "редовни професор"
+#let komisija_clan = "Јована Видаковић"
+#let komisija_clan_zvanje = "ванредни професор"
 
 // На енглеском уписати чланове на латиници
-#let komisija_predsednik_eng = "Petar Petrović"
-#let komisija_clan_eng = "Marko Marković"
+#let komisija_predsednik_eng = "Gordana Milosavljević"
+#let komisija_clan_eng = "Jovana Vidaković"
 #let mentor_eng = "Igor Dejanović"
 
 
