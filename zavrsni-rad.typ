@@ -21,6 +21,7 @@
 #show cite: set text(blue)
 #show ref: set text(blue)
 #show heading: set text(hyphenate: false)
+#show regex("[A-Za-z][A-Za-z0-9]*(?:-[A-Za-z0-9]+)*"): set text(style: "italic")
 
 #show figure.where(
   kind: table

@@ -28,7 +28,7 @@
         [RPC], [Remote Procedure Call (позив удаљене процедуре)],
         [SQL], [Structured Query Language (структурирани упитни језик)],
         [TLS], [Transport Layer Security (безбедност транспортног слоја)],
-        [UML], [Unified Modeling Language (јeзик за моделовање дијаграма)],
+        [UML], [Unified Modeling Language (језик за моделовање дијаграма)],
         [URL], [Uniform Resource Locator (јединствени идентификатор и локатор ресурса)],
         [UI], [User Interface (кориснички интерфејс)],
         [UUID], [Universally Unique Identifier (универзално јединствени идентификатор)],
