@@ -25,7 +25,7 @@
 #let apstrakt = [
      Рад приказује примену језика специфичног за домен Silvera за аутоматско
      генерисање микросервисне апликације за обраду поруџбина, као и њено
-     пребацивање на cloud платформе AWS и Azure. Приказани приступ се пореди
+     пребацивање на облачне платформе AWS и Azure. Приказани приступ се пореди
      са постојећим решењима за опис домена, архитектуре и API интерфејса.
 ]
 
@@ -48,15 +48,15 @@
 ]
 
 // TODO: Датум одбране и чланове комисије добијате од ментора
-#let datum_odbrane = "01.01.2025"
-#let komisija_predsednik = "Петар Петровић"
+#let datum_odbrane = "25.12.2026"
+#let komisija_predsednik = ""
 #let komisija_predsednik_zvanje = "ванредни професор"
-#let komisija_clan = "Марко Марковић"
+#let komisija_clan = ""
 #let komisija_clan_zvanje = "доцент"
 
 // На енглеском уписати чланове на латиници
-#let komisija_predsednik_eng = "Petar Petrović"
-#let komisija_clan_eng = "Marko Marković"
+#let komisija_predsednik_eng = ""
+#let komisija_clan_eng = ""
 #let mentor_eng = "Igor Dejanović"
 
 

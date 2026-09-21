@@ -32,7 +32,7 @@
 #import "@preview/hydra:0.6.2": hydra
 
 #show heading.where(level: 1): (it) => {
-    pagebreak(to: "odd", weak: true)
+    pagebreak()
     set block(spacing: 8pt)
     if heading.numbering != none {
         text("Глава " + counter(heading).display(), size: 22pt)
@@ -58,7 +58,7 @@
      }
 })
 
-#pagebreak(to: "odd", weak: false)
+#pagebreak(to: "odd", weak: true)
 #set heading(numbering: "1.1")
 #set page(numbering: "1")
 #counter(page).update(1)

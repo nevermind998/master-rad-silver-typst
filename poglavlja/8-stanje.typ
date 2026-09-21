@@ -2,23 +2,72 @@
 
 == JHipster Domain Language (JHipster Domain Language – JDL)
 
-JHipster Domain Language (JDL)#footnote[https://www.jhipster.tech/jdl/intro/]   је језик специфичан за домен који служи за деклативно моделовање домена апликације, опис ентитета и њиховог међусобног односа, као и за deployment. Користи се у оквиру JHipster платформе. Уз помоћу једног или више JDL фајлова може се описати целокупна структуру система користећи једноставну синтаксу. @lu-wang Да би се креирао JDL модела, потребно је да се приступи веб алату JDL Studio. Могуће је креирати JDL моделе и уз помоћ популарних окружења, као што су IntelliJ IDEA, Eclipse и Visual Studio Code. Ови алати омогућавају писање JDL модела, као и визуелизацију у виду UML#footnote[ https://drawio-app.com/uml-diagrams/] дијаграма, укључујући дељење или извоз модела. JDL представља пројекат отвореног кода (Apache 2.0 лиценца), који је доступан  на GitHub репозиторијуму#footnote[https://github.com/jhipster/]. Поред тога што представља језик за моделовање, доступан је и као Node.js#footnote[https://nodejs.org/en] библиотека која омогућава парсирање и обраду JDL модела у другим алатима. Уз помоћ њега се може аутоматско генерисати Spring Boot#footnote[https://spring.io/projects/spring-boot] backend-а и Angular#footnote[https://angular.dev/] /React#footnote[https://react.dev/] /Vue#footnote[https://vuejs.org/] frontend-а.  @jdl
+JHipster Domain Language (JDL)#footnote[https://www.jhipster.tech/jdl/intro/]   је језик специфичан за домен који служи за декларативно моделовање домена апликације, опис ентитета и њиховог међусобног односа. Користи се у оквиру JHipster платформе. Уз помоћу једног или више JDL фајлова може се описати целокупна структуру система користећи једноставну синтаксу. @lu-wang Да би се креирао JDL модела, потребно је да се приступи веб алату JDL Studio. Могуће је креирати JDL моделе и уз помоћ популарних окружења, као што су IntelliJ IDEA, Eclipse и Visual Studio Code. Ови алати омогућавају писање JDL модела, као и визуелизацију у виду UML#footnote[ https://drawio-app.com/uml-diagrams/] дијаграма, укључујући дељење или извоз модела. JDL представља пројекат отвореног кода (Apache 2.0 лиценца), који је доступан  на GitHub репозиторијуму#footnote[https://github.com/jhipster/]. Поред тога што представља језик за моделовање, доступан је и као Node.js#footnote[https://nodejs.org/en] библиотека која омогућава парсирање и обраду JDL модела у другим алатима. Уз помоћ њега се може аутоматско генерисати Spring Boot#footnote[https://spring.io/projects/spring-boot] backend-а и Angular#footnote[https://angular.dev/] /React#footnote[https://react.dev/] /Vue#footnote[https://vuejs.org/] frontend-а.  @jdl
 
-У наставку биће приказано како би пример еквивалентан пример ентитета поруџбине и ентитета за плаћање, који је за овај мастер рад развијан у Silvera-и. Дефинисање односа између ова два ентитета се одвија на слици @slika-7-1-1.
-
- 
-#figure(image("../slike/slika-7.1-1.png", width: 90%), caption: [Приказ JDL кода за креирања везе између поруџбине и система за плаћање]) <slika-7-1-1>
-
-Приказ самог ентитета за поруџбину је на слици @slika-7-1-2.
- 
-#figure(image("../slike/slika-7.1-2.png", width: 90%), caption: [Приказ JDL кода за креирања ентитета за поруџбину]) <slika-7-1-2>
-
-
-Пример дефинисања поруџбине у оквиру апликација приказано је на слици @slika-7-1-3.
+У наставку је приказан еквивалентан пример ентитета поруџбине и ентитета за плаћање, који је за овај мастер рад развијен у Silvera-и. Дефинисање односа приказано је у листингу @listing-jdl-relationship.
 
  
-#figure(image("../slike/slika-7.1-3.png", width: 90%), caption: [Приказ JDL кода за дефинисања поруџбине у оквиру апликација]) <slika-7-1-3>
-Главне предности су у томе што је синтакса јако једноставна, брзо се генерише CRUD апликација, добра је интеграција са JHipster платформом. Поред ових предности, постоје одређени недостаци који се односе на то да је ограничено на JHipster платформу, није подржана инфраструктурно моделовање, није погодна за  сложенији микросервисна архитектура. Постоји документација која детаљније описује на који начин је могуће да се инсталира и користи#footnote[https://www.jhipster.tech/getting-started]. 
+#figure(```jdl
+microservice Order, OrderItem with orderservice
+microservice Payment with paymentservice
+
+dto Order, OrderItem, Payment with mapstruct
+service Order, OrderItem, Payment with serviceImpl
+paginate Order, Payment with pagination
+filter Order, Payment
+```, caption: [JDL команде за конфигурисање микросервисâ и генерисање апликационих слојева],) <listing-jdl-relationship>
+
+Приказ ентитета за поруџбину налази се у листингу @listing-jdl-order.
+ 
+#figure(```jdl
+entity Order {
+	customerId UUID required
+	status OrderStatus required
+	totalAmount BigDecimal required min(0)
+	currency String required minlength(3) maxlength(3)
+	shippingStreet String required maxlength(200)
+	shippingCity String required maxlength(100)
+	shippingState String maxlength(100)
+	shippingPostalCode String required maxlength(20)
+	shippingCountry String required minlength(2) maxlength(2)
+	notes String maxlength(500)
+	createdAt Instant
+	updatedAt Instant
+	version Integer
+}
+
+entity OrderItem {
+	productId UUID required
+	productName String required maxlength(200)
+	quantity Integer required min(1)
+	unitPrice BigDecimal required min(0)
+	totalPrice BigDecimal
+}
+```, caption: [Дефинисање ентитета поруџбине у JDL-у],) <listing-jdl-order>
+
+
+Пример дефинисања апликације приказан је у листингу @listing-jdl-application.
+
+ 
+#figure(```jdl
+application {
+	config {
+		baseName orderservice
+		packageName com.ordertracking.order
+		applicationType microservice
+		authenticationType jwt
+		buildTool maven
+		databaseType sql
+		devDatabaseType postgresql
+		prodDatabaseType postgresql
+		serverPort 8081
+		serviceDiscoveryType eureka
+		languages [en, sr]
+	}
+	entities Order, OrderItem
+}
+```, caption: [Конфигурација апликације у JDL-у],) <listing-jdl-application>
+Главне предности су у томе што је синтакса јако једноставна, брзо се генерише CRUD апликација, добра је интеграција са JHipster платформом. Поред ових предности, постоје одређени недостаци који се односе на то да је ограничено на JHipster платформу, није подржано инфраструктурно моделовање, није погодна за  сложенији микросервисна архитектура. Постоји документација која детаљније описује на који начин је могуће да се инсталира и користи#footnote[https://www.jhipster.tech/getting-started]. 
 
 == Structurizr DSL
 
@@ -31,15 +80,48 @@ Structurizr DSL#footnote[https://docs.structurizr.com/dsl] је језик сп�
 
 Structurizr DSL даје опис система, контејнера, компоненти и њихових међусобних односа. Користи приступ који се назива Architecture as Code или Models as Code, где се архитектура чува у облику изворног кода, може се верзионисати у Git репозиторијумима и развијати заједно са самом апликацијом. Што другим речима значи да се архитектура система описује као текст, после се из тога генерише модел који је архитектурни дијаграми. Поред основног моделовања архитектуре, језик подржава и бројне напредне могућности, као што су дефинисање архетипова (Archetypes) ради поновне употребе модела, аутоматско закључивање имплицитних односа између елемената, укључивање других ЈСД датотека (Includes), проширење постојећих workspace модела, интеграцију Markdown и AsciiDoc документације, вођење евиденције архитектурних одлука (Architecture Decision Records – ADRs), коришћење скрипти и додатака (Plugins) за аутоматизацију, извоз модела у различите формате, укључујући PlantUML  и друге алате за визуелизацију. @predoaia2025
 
-Ако би ово поредили са примером из ове апликације, сама веза између поруџбине и плаћања како би изгледала у Structurizr DSL се налази на слици @slika-7-2-1.
+Ако би ово поредили са примером из ове апликације, сама веза између поруџбине и плаћања како би изгледала у Structurizr DSL-у налази се у листингу @listing-structurizr-relationship.
 
  
-#figure(image("../slike/slika-7.2-1.png", width: 90%), caption: [Приказ веза између поруџбине и плаћања у Structurizr DSL]) <slika-7-2-1>
+#figure(```dsl
+customer -> orderTracking.orderService.orderApi "Places order, checks status" "HTTPS/REST"
+orderTracking.paymentService.orderClient -> orderTracking.orderService.orderApi "GET /api/v1/orders/{id}" "HTTPS/REST"
+orderTracking.orderService.orderPublisher -> orderTracking.broker "Publishes to exchange order-events" "AMQP/topic"
+orderTracking.broker -> orderTracking.paymentService.paymentPublisher "Publishes to exchange payment-events" "AMQP/topic"
+orderTracking.orderService.orderRepository -> orderTracking.orderDb "Reads from and writes to \\\"Npgsql/TCP 5432\\\""
+```, caption: [Везе између поруџбине и плаћања у Structurizr DSL-у],) <listing-structurizr-relationship>
 
-Како би сам ентитет за поруџбину у Structurizr DSL изгледао је на слици 7.2:2.
+Како би сам ентитет за поруџбину у Structurizr DSL-у изгледао приказано је у листингу @listing-structurizr-workspace.
 
+#figure(```dsl
+workspace "Order Tracking System – Order & Payment" "C4 model scoped to OrderService + PaymentService (mirror of silvera/domains.si communication.si)" {
+	model {
+		customer = person "Customer" "Places orders and pays for them"
+		orderTracking = softwareSystem "Order Tracking System" "E-commerce order lifecycle, payments, tracking and notifications" {
+			orderService = container "Order Service" "Owns order lifecycle: creation, status transitions, cancellation" ".NET 8 / ASP.NET Core" "Microservice" {
+				orderApi = component "Order API" "REST endpoints for order CRUD and status" "ASP.NET Core Controller"
+				orderAppService = component "Order Application Service" "Use-cases: create, confirm, cancel, recompute totals" "C# service class"
+				orderRepository = component "Order Repository" "Persists Order aggregate (Order, OrderItem, Address)" "EF Core Repository"
+				orderPublisher = component "Order Event Publisher" "Publishes OrderCreatedEvent, OrderStatusChangedEvent, OrderCancelledEvent" "MassTransit Publisher"
+				orderConsumer = component "Order Event Consumer" "Consumes PaymentProcessedEvent / PaymentFailedEvent, updates order status" "MassTransit Consumer"
+				orderApi -> orderAppService "Uses"
+				orderAppService -> orderRepository "Reads from and writes to"
+				orderAppService -> orderPublisher "Raises domain events via"
+				orderConsumer -> orderRepository "Reads and writes to"
+				orderService -> orderPublisher "Publishes order events"
+				orderService -> orderConsumer "Consumes inbound event"
+			}
+			orderDb = container "Order Database" "Orders and order items" "PostgreSQL" "Database"
+			paymentService = container "Payment Service" "Authorises, captures and refunds payments" ".NET 8 / ASP.NET Core" "Microservice" {
+				//paymentAppService, paymentRepository, paymentPublisher, orderClient
 
- Слика 7.2:2 - Приказ ентитета за поруџбину у Structurizr DSL
+			}
+			paymentDb = container "Payment Database" "Payment records" "PostgreSQL" "Database"
+			broker = container "Message Broker" "Topic exchanges order-events / payment-events, durable queues, DLQ per queue" "RabbitMQ" "Message Broker"
+		}
+	}
+}
+```, caption: [Structurizr DSL workspace и модел система],) <listing-structurizr-workspace>
 
 Предности Structurizr DSL-а је да постоји јединствен модел, који генерише више архитектурних приказа различитог нивоа апстракције. Сви дијаграми су међусобно конзистентни, разлог за тим је што када год се измени текстуални модел, одмах након тога приказ се ажурира. Недостаци су то што не може аутоматски да се генерише имплементацију, не постоји описа API, нити се  моделира инфраструктуру. Он не моделира детаљну пословну логику, не генерише изворни код апликације нити конфигурације за распоређивање на облак платформи. Structurizr DSL се најчешће користи као средство за документовање архитектуре и комуникацију између архитеката, програмера и других заинтересованих страна у процесу развоја софтвера. 
 
@@ -47,24 +129,78 @@ Structurizr DSL даје опис система, контејнера, комп
 
 == Smithy
 
-Smithy#footnote[http://smithy.io/2.0/]  је језик за описивање сервиса (Interface Definition Language – IDL) који је развио AWS (Amazon Web Services). Основна намена овог језика је да омогући моделовање API-ја и аутоматско генерисање програмског кода, документације и SDK-ова за различите програмске језике. Настао је тако што га Amazon#footnote[https://www.amazon.com/] интерно користи више од десет година за развој AWS сервиса, као и за развој десетина хиљада других сервиса. У једном тренутку компанија Amazon је од Smithy направила open-source#footnote[https://opensource.com/resources/what-open-source]   пројекат како би и други програмери могли да користе исти приступ приликом развоја својих сервиса. Smithy није ограничен само на коришћење у оквиру AWS-а, може користити за развој cloud сервиса, микросервисних система, интерних корпоративних API-ја, јавних REST API-ја, RPC система. Основне карактеристике су моделовање сервиса, дефинисање операција, моделовање типова података, опис REST и RPC сервиса, генерисање клијентских библиотека. Модели који се користе су потпуно нормализовани, сваки тип података има јединствено име и јасно дефинисано место у моделу. Такође је омогућено да различити тимови управљају различитим деловима модела. Савремени Smithy омогућава моделовање REST, RPC и cloud сервиса, генерисање SDK-ова за више програмских језика (Java, Kotlin, TypeScript, Rust, Python, C  и друге), генерисање серверског кода и клијентских библиотека, генерисање OpenAPI спецификација, валидацију модела и проверу усклађености са правилима, проширивање модела путем traits-а, генерисање техничке документације, интеграцију са AWS сервисима и алатима, али и употребу у потпуно независним системима. @predoaia2025
-Како изгледа пример у коду за Smithy када се дефиншу сервиси је на слици @slika-7-3-1.
+Smithy#footnote[http://smithy.io/2.0/]  је језик за описивање сервиса (Interface Definition Language – IDL) који је развио AWS (Amazon Web Services). Основна намена овог језика је да омогући моделовање API-ја и аутоматско генерисање програмског кода, документације и SDK-ова за различите програмске језике. Настао је тако што га Amazon#footnote[https://www.amazon.com/] интерно користи више од десет година за развој AWS сервиса, као и за развој десетина хиљада других сервиса. У једном тренутку компанија Amazon је од Smithy направила open-source#footnote[https://opensource.com/resources/what-open-source]   пројекат како би и други програмери могли да користе исти приступ приликом развоја својих сервиса. Smithy није ограничен само на коришћење у оквиру AWS-а, може користити за развој сервиса у облаку, микросервисних система, интерних корпоративних API-ја, јавних REST API-ја, RPC система. Основне карактеристике су моделовање сервиса, дефинисање операција, моделовање типова података, опис REST и RPC сервиса, генерисање клијентских библиотека. Модели који се користе су потпуно нормализовани, сваки тип података има јединствено име и јасно дефинисано место у моделу. Такође је омогућено да различити тимови управљају различитим деловима модела. Савремени Smithy омогућава моделовање REST, RPC и сервиса у облаку, генерисање SDK-ова за више програмских језика (Java, Kotlin, TypeScript, Rust, Python, C  и друге), генерисање серверског кода и клијентских библиотека, генерисање OpenAPI спецификација, валидацију модела и проверу усклађености са правилима, проширивање модела путем traits-а, генерисање техничке документације, интеграцију са AWS сервисима и алатима, али и употребу у потпуно независним системима. @predoaia2025
+Пример дефинисања сервиса у Smithy-ју приказан је у листингу @listing-smithy-service.
 
  
-#figure(image("../slike/slika-7.3-1.png", width: 90%), caption: [Приказ дефинисања сервиса у Smithy]) <slika-7-3-1>
+#figure(```smithy
+@restJson1
+@title("Order Service")
+service OrderService {
+	version: "1.0.0"
+	resources: [Order]
+	errors: [ValidationError]
+}
+```, caption: [Дефинисање сервиса у Smithy-ју],) <listing-smithy-service>
 
-Дефинисање поруџбине се врши на као што се види на слици @slika-7-3-2.
+Дефинисање поруџбине приказано је у листингу @listing-smithy-order.
         
 
-#figure(image("../slike/slika-7.3-2.png", width: 90%), caption: [Приказ дефинисања ентитет за поруџбину у Smithy]) <slika-7-3-2>
+#figure(```smithy
+structure Order {
+	@required
+	id: OrderId
+	@required
+	customerId: UUID
+	@required
+	status: OrderStatus
+	@required
+	totalAmount: BigDecimal
+	@required
+	shippingAddress: Address
+	@required
+	items: OrderItemList
+}
+```, caption: [Дефинисање поруџбине у Smithy-ју],) <listing-smithy-order>
 
-Код дефинисања самих догађаја и комуникације између ових сервиса, то је приказано на слици @slika-7-3-3.
+ Код дефинисања догађаја и комуникације између ових сервиса приказан је у листингу @listing-smithy-events.
 
   
 
-#figure(image("../slike/slika-7.3-3.png", width: 90%), caption: [Приказ дефинисања ентитет за поруџбину у Smithy]) <slika-7-3-3>
+ #figure(```smithy
+ structure OrderCreatedEvent {
+	 @required
+	 orderId: OrderId
+	 @required
+	 customerId: UUID
+	 @required
+	 @timestampFormat("date-time")
+	 occurredAt: Timestamp
+ }
+ 
+ structure OrderStatusChangedEvent {
+	 @required
+	 orderId: OrderId
+	 @required
+	 previousStatus: OrderStatus
+	 @required
+	 newStatus: OrderStatus
+	 @required
+	 @timestampFormat("date-time")
+	 occurredAt: Timestamp
+ }
+ 
+ structure OrderCancelledEvent {
+	 @required
+	 orderId: OrderId
+	 reason: String
+	 @required
+	 @timestampFormat("date-time")
+	 occurredAt: Timestamp
+ }
+ ```, caption: [Дефинисање догађаја у Smithy-ју],) <listing-smithy-events>
 
-Главне предности Smithy-ја су независност од комуникационог протокола, богата подршка за генерисање кода и SDK-ова, могућност проширивања модела путем traits-а, снажан систем валидације, погодност за велике организације и тимски рад, лако одржавање и еволуција API-ја, могућност генерисања различитих пројекција истог модела, интеграцију са сервисним оквирима, генерисање документације, контролу политика и правила, добра интеграција са cloud окружењима, посебно AWS платформом, независан од програмског језика, као и то што је погодан за микросервисе. Све ове предности су довеле до тога да се Smithy сматра једним од најнапреднијих језика за моделовање сервиса и представља озбиљну алтернативу традиционалним IDL језицима као што су OpenAPI, Protocol Buffers и Apache Thrift, нарочито у системима заснованим на микросервисној архитектури и аутоматском генерисању програмског кода. Недостаци су то што не моделира базу података, као ни инфраструктуру, јер је фокус  искључиво на API слоју.
+Главне предности Smithy-ја су независност од комуникационог протокола, богата подршка за генерисање кода и SDK-ова, могућност проширивања модела путем traits-а, снажан систем валидације, погодност за велике организације и тимски рад, лако одржавање и еволуција API-ја, могућност генерисања различитих пројекција истог модела, интеграцију са сервисним оквирима, генерисање документације, контролу политика и правила, добра интеграција са окружењем у облаку, посебно AWS платформом, независан од програмског језика, као и то што је погодан за микросервисе. Све ове предности су довеле до тога да се Smithy сматра једним од најнапреднијих језика за моделовање сервиса и представља озбиљну алтернативу традиционалним IDL језицима као што су OpenAPI, Protocol Buffers и Apache Thrift, нарочито у системима заснованим на микросервисној архитектури и аутоматском генерисању програмског кода. Недостаци су то што не моделира базу података, као ни инфраструктуру, јер је фокус  искључиво на API слоју.
  
 
 
@@ -73,13 +209,13 @@ Smithy#footnote[http://smithy.io/2.0/]  је језик за описивање 
 
 OpenAPI Specification (OAS)#footnote[https://spec.openapis.org/oas/v3.2.0.html]  није класичан језик специфичан за домен који се користи за моделовање целокупног система. Оно што иде у прилог причи да је ЈСД, јесте то што може да се сматра декларативним јер је намењен само опису HTTP/REST API-ја, користи декларативну синтаксу (yaml или json), могуће је  да се из једног модела генеришу различити артефакти (документација, SDK, серверски код, тестови). Ако се пореди са Smithy или Silvera, OpenAPI не моделује архитектуру система, сервисе, комуникацију између микросервиса или пословну логику. Он је фокусиран искључиво на опис API интерфејса. Другим речима може се сматрати ЈСД-ом за опис API интерфејса. OpenAPI се може дефинисати као индустријски стандард за опис REST API-ја. Његове карактеристике су опис REST endpoint-а, дефинисање HTTP метода, опис захтева и одговора, аутоматска документација. 
 
-OpenAPI има веома значајну улогу у оквиру cloud платформе Azure, користи се као стандардни формат за опис и интеграцију API-ја у више сервиса. Најчешћа употреба је у Azure API Management, где Azure  даје могућност да се OpenAPI документ  може директно импортовати у APIM. Довољно је имати openapi.yaml или openapi.json и APIM ће из њега креирати API endpoint.  OpenAPI поред генерисања API endpoint, генерише документацију, даје могуће је тестирање API-је преко прегледача, примењује политике (аутентикација, rate limiting, caching), објављује API преко једног Gateway-а. API документација приказана у Azure API Management Developer Portal#footnote[https://azure.microsoft.com/en-us/products/api-management]-у директно се заснива на OpenAPI спецификацији.
+OpenAPI има веома значајну улогу у оквиру Azure-а, користи се као стандардни формат за опис и интеграцију API-ја у више сервиса. Најчешћа употреба је у Azure API Management, где Azure  даје могућност да се OpenAPI документ  може директно импортовати у APIM. Довољно је имати openapi.yaml или openapi.json и APIM ће из њега креирати API endpoint.  OpenAPI поред генерисања API endpoint, генерише документацију, даје могуће је тестирање API-је преко прегледача, примењује политике (аутентикација, rate limiting, caching), објављује API преко једног Gateway-а. API документација приказана у Azure API Management Developer Portal#footnote[https://azure.microsoft.com/en-us/products/api-management]-у директно се заснива на OpenAPI спецификацији.
 
 OpenAPI  се може користи и за генерисање Azure Functions. Примери су .NET Azure Functions, Java Azure Functions. Омогућавају им да  користити OpenAPI JSON екстензију која генерише #footnote[https://swagger.io/open-source/swagger-ui/]  и на тај начин је омогућено тестирање функција преко прегледача. 
 
 Azure Logic Apps користи OpenAPI за дефинисање Custom Connector-а. Azure SDK алати могу користити OpenAPI за генерисање C , Java, TypeScript, Python и Go клијентских библиотека. У DevOps процесу OpenAPI се често користи као артефакт који се валидира током CI процеса, верзионише у Git репозиторијуму, аутоматски објављује у Azure API Management и користи за аутоматско тестирање.
 
-Ентитет поруџбине се дефинише на начин на који је приказан на слици @slika-7-4-1. Како изгледа креирања захтева приказано је на слици @slika-7-4-2.  Креирање еndpointa је на слици @slika-7-4-3.
+Ентитет поруџбине дефинисан је у листингу @listing-openapi-order. Захтев је приказан у листингу @listing-openapi-request, а endpoint у листингу @listing-openapi-endpoint.
 
 Предности су индустријски стандард, велика подршка алата, добра интеграција са Swagger-ом. Недостаци су што се не моделира домен, не моделира архитектуру, не описује инфраструктуру.
 
@@ -90,13 +226,71 @@ Azure Logic Apps користи OpenAPI за дефинисање Custom Connect
 
 
  
-#figure(image("../slike/slika-7.4-1.png", width: 90%), caption: [Дефинисање ентитета за поруџбину у OpenAPI]) <slika-7-4-1>
+#figure(```yaml
+Order:
+	type: object
+	required: [id, customerId, status, totalAmount, currency, shippingAddress, items, createdAt, updatedAt, version]
+	properties:
+		id: { type: string, format: uuid, readOnly: true }
+		customerId: { type: string, format: uuid }
+		status: { $ref: "#/components/schemas/OrderStatus" }
+		totalAmount: { type: number, format: decimal, minimum: 0, readOnly: true }
+		currency: { type: string, minLength: 3, maxLength: 3, default: USD }
+		shippingAddress: { $ref: "#/components/schemas/Address" }
+		items: { type: array, items: { $ref: "#/components/schemas/OrderItem" } }
+		notes: { type: string, maxLength: 500 }
+		createdAt: { type: string, format: date-time, readOnly: true }
+		updatedAt: { type: string, format: date-time, readOnly: true }
+		version: { type: integer, readOnly: true }
+```, caption: [Дефинисање ентитета за поруџбину у OpenAPI-ју],) <listing-openapi-order>
 
 
  
-#figure(image("../slike/slika-7.4-2.png", width: 90%), caption: [Креирање захтева за поруџбину у OpenAPI]) <slika-7-4-2>
+#figure(```yaml
+CreateOrderRequest:
+	type: object
+	required: [customerId, shippingAddress, items]
+	properties:
+		customerId: { type: string, format: uuid }
+		shippingAddress: { $ref: "#/components/schemas/Address" }
+		items:
+			type: array
+			minItems: 1
+			items:
+				type: object
+				required: [productId, productName, quantity, unitPrice]
+				properties:
+					productId: { type: string, format: uuid }
+					productName: { type: string, maxLength: 200 }
+					quantity: { type: integer, minimum: 1 }
+					unitPrice: { type: number, format: decimal, minimum: 0 }
+		notes: { type: string, maxLength: 500 }
+```, caption: [Креирање захтева за поруџбину у OpenAPI-ју],) <listing-openapi-request>
  
-#figure(image("../slike/slika-7.4-3.png", width: 90%), caption: [Креирање сервиса за поруџбину у OpenAPI]) <slika-7-4-3>
+#figure(```yaml
+openapi: 3.1.0
+info:
+	title: Order Service
+	version: "1.0.0"
+security:
+	- bearerAuth: []
+paths:
+	/api/v1/orders:
+		post:
+			operationId: createOrder
+			summary: Create a new order
+			requestBody:
+				required: true
+				content:
+					application/json:
+						schema:
+							$ref: "#/components/schemas/CreateOrderRequest"
+			responses:
+				"201":
+					description: Order created
+				"400":
+					$ref: "#/components/responses/ValidationError"
+```, caption: [Креирање endpoint-а за поруџбину у OpenAPI-ју],) <listing-openapi-endpoint>
  
 
 == Поређење постојећих приступа
@@ -117,13 +311,13 @@ Azure Logic Apps користи OpenAPI за дефинисање Custom Connect
 
 Сваки микросервис се пакује у Docker контејнер, како би се обезбедила преносивост и све предности које коришћење Docker гарантује. Након тога је могуће апликацију распоредити на различите облак платформе, као што су Azure Container Apps или AWS. 
 
-Као што је већ наглашено и истакнуто, овим приступом добијамо јасну разлику између архитектуре и сервисног модела, што само по себи има неке предности и недостатке. Предност је то што се измене у архитектури могу вршити потпуно независно од API спецификације, а уколико постоје неке измене на API-јима то се не одражава на већ постојеће архитектурне дијаграме, генерисане коришћењем Structurizr DSL. Апликација направљена овом комбинацијом, има јасну поделу одговорности, што повећава модуларности система и даје могућност да сваки језик буде употребљен у области за коју је оптимизован. Недостаци се огледају у томе како архитектура и API нису описани у оквиру једног модела, потребно је да се одржава њихова међусобну синхронизацију. Ако се дода нови микросервис у архитектурном моделу, након тога се ручно креира одговарајући Smithy модел. Доменски модели, као што су ентитети, релација и пословних правила, као и  конфигурацију за пребацивање на cloud платформе мора ручно да се креира. 
+Као што је већ наглашено и истакнуто, овим приступом добијамо јасну разлику између архитектуре и сервисног модела, што само по себи има неке предности и недостатке. Предност је то што се измене у архитектури могу вршити потпуно независно од API спецификације, а уколико постоје неке измене на API-јима то се не одражава на већ постојеће архитектурне дијаграме, генерисане коришћењем Structurizr DSL. Апликација направљена овом комбинацијом, има јасну поделу одговорности, што повећава модуларности система и даје могућност да сваки језик буде употребљен у области за коју је оптимизован. Недостаци се огледају у томе како архитектура и API нису описани у оквиру једног модела, потребно је да се одржава њихова међусобну синхронизацију. Ако се дода нови микросервис у архитектурном моделу, након тога се ручно креира одговарајући Smithy модел. Доменски модели, као што су ентитети, релација и пословних правила, као и конфигурацију за пребацивање на облачне платформе мора ручно да се креира. 
  
 
 
 === Поређење Silverе са комбинацијом језика Smithy и Structurizr DSL
 
-Код самог поређења ова два приступа, са једне стране Structurizr DSL и Smithy праве доста модуларну апликацију, док се друге стране Silverа прави мање модуларну апликацију, али има већи обим подршке при њеном креирању. Код Structurizr DSL и Smithy приступа постоје одвојени делови где се генерише архитектура система и где се генерише API спецификација, док се доменски модели и конфигурацију за пребацивање на cloud платформе мора ручно урадити. Silvera у потпуности прави доменски модели, микросервисе, дефинише комуникација, врши конфигурација за контејнеризацију и пребацивање на cloud платформе. Што значи  да је код Silvera довољан један модел да подржи све информације о систему.
+Код самог поређења ова два приступа, са једне стране Structurizr DSL и Smithy праве доста модуларну апликацију, док се друге стране Silverа прави мање модуларну апликацију, али има већи обим подршке при њеном креирању. Код Structurizr DSL и Smithy приступа постоје одвојени делови где се генерише архитектура система и где се генерише API спецификација, док се доменски модели и конфигурацију за пребацивање на облачне платформе мора ручно урадити. Silvera у потпуности прави доменски модели, микросервисе, дефинише комуникација, врши конфигурација за контејнеризацију и пребацивање на платформе у облаку. Што значи  да је код Silvera довољан један модел да подржи све информације о систему.
 
 Наспрам потреба и захтева самог система, пословног приступа и  преференција особе или тима који доносе одлуке, оба ова приступа имају предности и мане. Укратко, у следећем табеларном приказу се могу видети те разлике.
 
@@ -157,14 +351,14 @@ Azure Logic Apps користи OpenAPI за дефинисање Custom Connect
 
 Да би се створила модуларна апликација, потребно је да се за почетак дефинише пословни ентитети, њихове међусобне везе, припадност микросервисима и техничке карактеристике апликације. Када је све то урађено, користи се JHipster генератор који креира структуру пројекта, слојеве апликације, приступ бази података и основну имплементацију REST контролера. Следећи корак је да се за сваки сервис генерише OpenAPI спецификација која документује доступне REST операције, параметре, захтеве и одговоре. Коришћењем OpenAPI спецификације могуће је генерисати документацију, клијентске SDK библиотеке за различите програмске језике, серверске шаблоне и аутоматизовано тестирање API интерфејса.
 
-Предност овог приступа је то што JDL омогућава брзо генерисање великог дела апликације и смањује количину ручно написаног кода, док OpenAPI обезбеђује стандардизовану документацију API-ја и лакшу интеграцију са другим системима. Оба алата имају широку употребу и велику популарност у индустрији, па тако имају велику подршку додатних алата за генерисање кода, тестирање и документацију. Недостаци овог приступа су то што не постоји јединствен модел који представља комплетну архитектуру микросервисне апликације, јер JDL и OpenAPI описују различите аспекте система. То повећава сложеност одржавања и захтева синхронизацију приликом измена. Како би апликација била подржана на cloud платформама, као што су Azure или AWS за то је потребно користити додатне алате и конфигурационе датотеке.
+Предност овог приступа је то што JDL омогућава брзо генерисање великог дела апликације и смањује количину ручно написаног кода, док OpenAPI обезбеђује стандардизовану документацију API-ја и лакшу интеграцију са другим системима. Оба алата имају широку употребу и велику популарност у индустрији, па тако имају велику подршку додатних алата за генерисање кода, тестирање и документацију. Недостаци овог приступа су то што не постоји јединствен модел који представља комплетну архитектуру микросервисне апликације, јер JDL и OpenAPI описују различите аспекте система. То повећава сложеност одржавања и захтева синхронизацију приликом измена. Како би апликација била подржана на облачним платформама, као што су Azure или AWS за то је потребно користити додатне алате и конфигурационе датотеке.
  
 
 
 
 === Поређење Silverе са комбинацијом језика ЈHipster Domain Language и OpenAPI
 
-Комбиновањем приступа JDL-а и OpenAPI-а добијамо систем која има доста добру подршку за развој микросервисних апликација и документацију REST интерфејса, али се не обједињују сви аспекте развоја у оквиру једног модела. Silvera у оквиру једног модела генерише изворни код, архитектурни модел, Docker конфигурација и конфигурације за распоређивање на cloud платформама, што је у већој мери у складу са принципима Model-Driven Development приступа.
+Комбиновањем приступа JDL-а и OpenAPI-а добијамо систем који има доста добру подршку за развој микросервисних апликација и документацију REST интерфејса, али се не обједињују сви аспекте развоја у оквиру једног модела. Silvera у оквиру једног модела генерише изворни код, архитектурни модел, Docker конфигурација и конфигурације за распоређивање на платформама у облаку, што је у већој мери у складу са принципима Model-Driven Development приступа.
 
 Складно са потребама и захтевима који се намећу приликом развијања микросервисне апликације, све предности и мане оба приступа се требају узети у обзир и извагати која је најбоља опција. У следећој табели је анализа и упоређивање ова два приступа кроз пар ставки.
 
@@ -210,7 +404,7 @@ Azure Logic Apps користи OpenAPI за дефинисање Custom Connect
 
 Прва фаза развоја апликације је да се најпре креира JDL модел, на основу кога JHipster генератор генерише микросервисне апликације и њихову основну структуру. Након тога, за сваки сервис креира се Smithy модел који описује јавни API, операције, захтеве, одговоре и типове података. На основу Smithy спецификације могуће је генерисати SDK библиотеке за различите програмске језике, OpenAPI документацију и друге артефакте који олакшавају интеграцију са другим системима. 
 
-Предности су те што је систем модуларнији, јер имамо јасно разграничење одговорности. Недостаци овог приступа су то што постоје две независна модела, којима се описују различити аспекти система. Доменски модел је дефинисан уз помоћ JDL-а и API модел дефинисаног у Smithy-у морају се одржавати синхронизовано. Све измене које се десе захтевају ажурирање оба модела, што повећава сложеност развоја и могућност појаве неконзистентности. Не постоји модел комплетне архитектуре система, већ су покривени само посебни сегменти, како би се постигло то да имамо документацију у целости, морају да се користе Structurizr DSL или UML дијаграми. Како би апликација била подржана на cloud платформама, као што су Azure или AWS за то неопходно користити додатне алате и конфигурационе датотеке.
+Предности су те што је систем модуларнији, јер имамо јасно разграничење одговорности. Недостаци овог приступа су то што постоје две независна модела, којима се описују различити аспекти система. Доменски модел је дефинисан уз помоћ JDL-а и API модел дефинисаног у Smithy-у морају се одржавати синхронизовано. Све измене које се десе захтевају ажурирање оба модела, што повећава сложеност развоја и могућност појаве неконзистентности. Не постоји модел комплетне архитектуре система, већ су покривени само посебни сегменти, како би се постигло то да имамо документацију у целости, морају да се користе Structurizr DSL или UML дијаграми. Како би апликација била подржана на облачној платформама, као што су Azure или AWS за то неопходно користити додатне алате и конфигурационе датотеке.
 
  
 
@@ -253,14 +447,14 @@ Azure Logic Apps користи OpenAPI за дефинисање Custom Connect
 
 Прво је потребно да се Smithy креира модел система, затим да се OpenAPI спецификација аутоматски генерише из Smithy модела. OpenAPI спецификација се користи за документацију, интеграцију са другим системима и алатима, као и за генерисање клијентских библиотека које користе програмери. На горе описан начин се избегава то да морају да се одржавају два независна API модел и обезбеђује конзистентност између имплементације сервиса и документације. Уколико је потребно да се измени API модел, то се прво ради у оквиру Smithy спецификацији, после тога се OpenAPI документација може аутоматски генерисати. То значајно смањује могућност појаве неконзистентности између имплементације сервиса и његове документације.
 
-Предност овог приступа коју даје Smithy јесте што је добро покривен систем за моделовање, поред описа HTTP интерфејса, омогућава дефинисање сложених типова података, правила валидације, наслеђивања, верзионисања сервиса итд. Захваљујући томе, Smithy модел може се посматрати као основа за генерисање различитих излазних формата, OpenAPI је само један од могућих. Предност коју даје OpenAPI је та што има предност када је у питању подршка алата. Практично сви савремени API Gateway системи, cloud платформе, развојна окружења и алати за тестирање подржавају OpenAPI спецификацију. Swagger UI, Swagger Codegen, OpenAPI Generator, Postman, Insomnia, Kong Gateway, Azure API Management, Amazon API Gateway и бројни други системи могу директно користити OpenAPI документ без додатних конверзија. Ограничења ове комбинације када се моделују микросервисне апликације је у томе што оба језика описују искључиво API слој система. Ни Smithy ни OpenAPI не моделују пословни домен, архитектуру микросервиса, комуникацију између компоненти, базе података или инфраструктуру за распоређивање. Такође, они не обезбеђују генерисање комплетне имплементације микросервисне апликације, већ се углавном користе за генерисање API документације, SDK библиотека и серверских шаблона. Још једно ограничење односи се на архитектурну документацију. Иако је могуће описати структуру појединачног API интерфејса, ова комбинација не обезбеђује генерисање архитектурних модела као што су C4 дијаграми, UML дијаграми или приказ односа између микросервиса. За такве потребе неопходно је користити додатне алате, као што су Structurizr DSL, PlantUML или други системи за моделовање архитектуре. Поред тога, ни Smithy ни OpenAPI не пружају директну подршку за моделовање инфраструктуре и cloud окружења. Конфигурације за Docker, Kubernetes, Microsoft Azure или Amazon Web Services морају бити креиране независно од API спецификације, најчешће употребом YAML конфигурација, Terraform-а, AWS CloudFormation-а или других Infrastructure as Code алата
+Предност овог приступа коју даје Smithy јесте што је добро покривен систем за моделовање, поред описа HTTP интерфејса, омогућава дефинисање сложених типова података, правила валидације, наслеђивања, верзионисања сервиса итд. Захваљујући томе, Smithy модел може се посматрати као основа за генерисање различитих излазних формата, OpenAPI је само један од могућих. Предност коју даје OpenAPI је та што има предност када је у питању подршка алата. Практично сви савремени API Gateway системи, облачне платформе, развојна окружења и алати за тестирање подржавају OpenAPI спецификацију. Swagger UI, Swagger Codegen, OpenAPI Generator, Postman, Insomnia, Kong Gateway, Azure API Management, Amazon API Gateway и бројни други системи могу директно користити OpenAPI документ без додатних конверзија. Ограничења ове комбинације када се моделују микросервисне апликације је у томе што оба језика описују искључиво API слој система. Ни Smithy ни OpenAPI не моделују пословни домен, архитектуру микросервиса, комуникацију између компоненти, базе података или инфраструктуру за распоређивање. Такође, они не обезбеђују генерисање комплетне имплементације микросервисне апликације, већ се углавном користе за генерисање API документације, SDK библиотека и серверских шаблона. Још једно ограничење односи се на архитектурну документацију. Иако је могуће описати структуру појединачног API интерфејса, ова комбинација не обезбеђује генерисање архитектурних модела као што су C4 дијаграми, UML дијаграми или приказ односа између микросервиса. За такве потребе неопходно је користити додатне алате, као што су Structurizr DSL, PlantUML или други системи за моделовање архитектуре. Поред тога, ни Smithy ни OpenAPI не пружају директну подршку за моделовање инфраструктуре и окружења у облаку. Конфигурације за Docker, Kubernetes, Microsoft Azure или Amazon Web Services морају бити креиране независно од API спецификације, најчешће употребом YAML конфигурација, Terraform-а, AWS CloudFormation-а или других Infrastructure as Code алата
 
  
 
 
 === Поређење Silverе са комбинацијом језика OpenAPI и Smithy
 
-Предност коју даје комбинација OpenAPI и Smithy јесте то што је одрађено детаљније моделовање API-ја и сервиса, као и генерисање клијентског и серверског кода, док је Silverа представља свеобухватнији приступ заснован на принципима Model-Driven Development-а. Даје могућност моделовање доменског модела, микросервисне архитектуре, комуникације између сервиса, генерисање изворног кода, Docker конфигурације, као и конфигурација за распоређивање на cloud платформама као што су Azure и AWS. 
+Предност коју даје комбинација OpenAPI и Smithy јесте то што је одрађено детаљније моделовање API-ја и сервиса, као и генерисање клијентског и серверског кода, док је Silverа представља свеобухватнији приступ заснован на принципима Model-Driven Development-а. Даје могућност моделовање доменског модела, микросервисне архитектуре, комуникације између сервиса, генерисање изворног кода, Docker конфигурације, као и конфигурација за распоређивање на платформама у облаку као што су Azure и AWS. 
 Мало детаљније упоређивање ова два приступа може се видети у Табели 4.
 
 #figure(
