@@ -42,10 +42,25 @@ ENTRYPOINT ["dotnet", "{{ service.name }}.dll"]
 
 == Генерисање Terraform и Kubernetes конфигурације
 
-У оквиру Silvera-е главни део модела за Terraform је написан у aws-deployment.si и azure-deployment.si фајловима. Унутар ових фајлова је дефинисано како да се направи све што је потребно за AWS/Azure налог, затим регистровање контејнера и Kubernetes кластера, дефинисање базе, начина слања порука, мониторинг и потребан фајл где се чувају скривене битне информације везане за базу и сервисе. Након што се изгенерише апликација добијемо два одвојена фолдера за AWS и Azure, који имају исту структуру. Структура се може видети на слици @slika-6-9-1. 
+У оквиру Silvera-е главни део модела за Terraform је написан у `aws-deployment.si` и `azure-deployment.si` фајловима. Унутар ових фајлова је дефинисано како да се направи све што је потребно за AWS/Azure налог, затим регистровање контејнера и Kubernetes кластера, дефинисање базе, начина слања порука, мониторинг и потребан фајл у коме се чувају скривене битне информације везане за базу и сервисе. Након генерисања апликације добијају се два одвојена фолдера за AWS и Azure, који имају исту структуру. Структура је приказана у листингу @listing-6-9-1.
 
  
-#figure(image("../slike/slika-6.9-1.png", width: 90%), caption: [Структура фолдера за AWS и Azure]) <slika-6-9-1>
+#figure(
+	```text
+generated/
+├── aws/
+│   ├── main.tf.j2
+│   ├── messaging.tf.j2
+│   ├── secrets.tf.j2
+│   └── terraform.tfvars.example.j2
+└── azure/
+		├── main.tf.j2
+		├── messaging.tf.j2
+		├── secrets.tf.j2
+		└── terraform.tfvars.example.j2
+	```
+	, caption: [Структура фолдера за AWS и Azure],
+) <listing-6-9-1>
 
 	На слици @slika-6-9-2 је описано како тече сам процес генерисања свих фајлова који су неопходни Terraform-у. 
  
@@ -314,7 +329,8 @@ Results: 27 passed | 0 failed | 1 skipped
 
 Резултати smoke тестова су представљени на овај начин: 
 
-#figure(```text
+#figure(
+	```text
 Order Tracking System — Integration Test Suite
 Section 1 — Health checks
 All health and readiness endpoints passed for all 4 services.
