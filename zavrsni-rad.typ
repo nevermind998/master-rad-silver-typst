@@ -121,6 +121,7 @@
 #include "biografija.typ"
 
 #show "Available at:": "Доступно на "
+#show "Accessed:": "Приступала: "
 #bibliography("literatura.bib", title: [Литература], full: true)
 #checkbib()
 
