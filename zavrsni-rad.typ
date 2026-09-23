@@ -121,7 +121,19 @@
 #include "biografija.typ"
 
 #show "Available at:": "Доступно на "
-#show "Accessed:": "Приступала: "
+#show "Accessed:": "Приступ: "
+#show "January": "јануар"
+#show "February": "фебруар"
+#show "March": "март"
+#show "April": "април"
+#show "May": "мај"
+#show "June": "јун"
+#show "July": "јул"
+#show "August": "август"
+#show "September": "септембар"
+#show "October": "октобар"
+#show "November": "новембар"
+#show "December": "децембар"
 #bibliography("literatura.bib", title: [Литература], full: true)
 #checkbib()
 
